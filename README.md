@@ -8,8 +8,8 @@ These observations will guide future data creation, highlighting which features 
 
 
 ## Data
-You can download the whole data in the release section and save it at `${REPO_DIR}/data` for the analysis.
-It contains the processed datasets in universal format, located in the `data/universal` folder.
+You can download the processed data in the release section and save it at `${REPO_DIR}/data` for the analysis.
+It contains the datasets in universal format, located in the `data/universal` folder.
 ```bash
 [
     {
@@ -27,6 +27,8 @@ It contains the processed datasets in universal format, located in the `data/uni
 ]
 ```
 Mappings are also available in the `data/mapping` and `data/mapping_when_permitted` folders.
+
+If you want to process the raw data, you can follow the steps in [this document](./preprocessing_data/README.md).
 
 ## Analysis
 Analysis section is divided into several sub-sections, each of which is a specific analysis in the paper.
