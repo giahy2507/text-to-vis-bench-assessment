@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "acorn": "^8.11.2",
+    "acorn-jsx": "^5.3.2",
+    "acorn-loose": "^8.4.0",
+    "chartjs": "^0.3.24",
+    "vega-lite": "^5.16.3"
+  },
+  "name": "js_code",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
