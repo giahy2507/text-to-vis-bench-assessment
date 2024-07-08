@@ -88,6 +88,9 @@ This analysis supports our conclusion that the distribution of values used in Ch
 }
 ```
 
+## License
+Please acknowledge and follow the license of [The Stack dataset](https://huggingface.co/datasets/bigcode/the-stack-dedup#terms-of-use-for-the-stack) when using the data in this repository.
+
 ## Contact
 - Ngoc Gia Hy Nguyen: nngu0448@uni.sydney.edu.au
 - Dr. Jonathan K. Kummerfeld: jonathan.kummerfeld@sydney.edu.au
