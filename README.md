@@ -8,7 +8,7 @@ These observations will guide future data creation, highlighting which features 
 
 
 ## Data
-You can download the processed data in the release section and save it at `${REPO_DIR}/data` for the analysis.
+You can download the processed data in (the release section)[https://github.com/giahy2507/text-to-vis-bench-assessment/releases/tag/data] and save it at `${REPO_DIR}/data` for the analysis.
 It contains the datasets in universal format, located in the `data/universal` folder.
 ```bash
 [
