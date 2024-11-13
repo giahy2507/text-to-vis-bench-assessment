@@ -83,14 +83,24 @@ This analysis supports our conclusion that the distribution of values used in Ch
 
 ## Cite
 ```
-@misc{nguyen2024texttovisbenchmarkstestreal,
-      title={Do Text-to-Vis Benchmarks Test Real Use of Visualisations?}, 
-      author={Hy Nguyen and Xuefei He and Andrew Reeson and Cecile Paris and Josiah Poon and Jonathan K. Kummerfeld},
-      year={2024},
-      eprint={2407.19726},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2407.19726}, 
+@inproceedings{nguyen-etal-2024-text,
+    title = "Do Text-to-Vis Benchmarks Test Real Use of Visualisations?",
+    author = "Nguyen, Hy  and
+      He, Xuefei  and
+      Reeson, Andrew  and
+      Paris, Cecile  and
+      Poon, Josiah  and
+      Kummerfeld, Jonathan K.",
+    editor = "Al-Onaizan, Yaser  and
+      Bansal, Mohit  and
+      Chen, Yun-Nung",
+    booktitle = "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing",
+    month = nov,
+    year = "2024",
+    address = "Miami, Florida, USA",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2024.emnlp-main.423",
+    pages = "7433--7441"
 }
 ```
 
