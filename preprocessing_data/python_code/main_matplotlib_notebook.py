@@ -65,19 +65,67 @@ def main_matplotlib_notebook():
 
 
 if __name__ == "__main__":
-    main_matplotlib_notebook()
-
-    # jsonl_path = "/Users/nngu0448/Documents/data/code-gen-4-vis-phase-1/Universal-Usage-2/Matplotlib_Python/Matplotlib_Python.universal2.jsonl"
-
-
-    # total_function = 0
-    # with open(jsonl_path, mode="r", encoding="utf-8") as fi:
-    #     for line in fi:
-    #         json_data = json.loads(line)
-    #         content = json_data["content"]
-    #         total_function += len(content)
+    # main_matplotlib_notebook()
     
-    # print(total_function)
+    target_lib = "seaborn"
+    
+    if target_lib == "matplotlib":
+        matplotlib_schema_dir = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/raw-data/schema/matplotlib_schema"
+        schema_dict = load_matplotlib_schema(matplotlib_schema_dir=matplotlib_schema_dir,
+                                                        library_name="matplotlib",
+                                                        version_list=["3.8.1", "2.2.5" ,"1.5.3"])
+    elif target_lib == "pandas":
+        pandas_schema_dir = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/raw-data/schema/pandas_schema"
+        schema_dict = load_matplotlib_schema(matplotlib_schema_dir=pandas_schema_dir,
+                                                    library_name="pandas",
+                                                    version_list=["2.2.3"])
+    elif target_lib == "seaborn":
+        seaborn_schema_dir = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/raw-data/schema/seaborn_schema"
+        schema_dict = load_matplotlib_schema(matplotlib_schema_dir=seaborn_schema_dir,
+                                                library_name="seaborn",
+                                                version_list=["0.13.2"])
+    else:
+        raise ValueError(f"Unsupported target library: {target_lib}")
+    
+    
+    import glob
+    glob_path = "/Users/nngu0448/Documents/data/github-data/*/*/*/*_t2v_detection.json"
+    nb_detection_paths = sorted(glob.glob(glob_path))
+    
+    data = []
+    
+    for nb_detection_path in nb_detection_paths:
+        
+        nb_path = nb_detection_path.replace("_t2v_detection.json", ".ipynb")
+        assert os.path.exists(nb_path), f"{nb_path} does not exist"
+        
+        # nb_path = '/Users/nngu0448/Documents/data/github-data/Batch-1/test-set-plotcoder/plotcoder_0001/Exercises_code_with_solutions.ipynb'
+        notebook = nbformat.read(nb_path, as_version=4)
+
+        # filter and preprocess code cells
+        code_cells = []
+        for cell in notebook.cells:
+            if cell.cell_type == 'code':
+                code_cells.append(filter_by_lines(cell.source))
+
+        universal_items = []
+        universal_items = parse_ast_for_notebook_cells(schema_dict, code_cells, target_lib=target_lib)
+        
+        print(f"Processing {nb_detection_path}")
+        print(len(universal_items))
+        for item in universal_items:
+            print(item)
+        print("=====================================")
+        
+        data.append({
+            "file_path": nb_path,
+            "content": universal_items
+        })
+
+    output_path = f"/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/universal_phase2/notebook.{target_lib}.universal2.jsonl"
+    with open(output_path, "w") as fo:
+        for item in data:
+            fo.write(json.dumps(item, ensure_ascii=False) + "\n")
             
 
     

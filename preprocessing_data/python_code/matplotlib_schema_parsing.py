@@ -135,14 +135,16 @@ def extract_library_def_functions(glob_path, output_path):
     fo.close()
 
 
-def load_matplotlib_schema(matplotlib_schema_dir, 
-                           version_list=["3.8.1", "2.2.5" ,"1.5.3"]):
+def load_matplotlib_schema(matplotlib_schema_dir,
+                           library_name = "matplotlib", 
+                           version_list = ["3.8.1", "2.2.5" ,"1.5.3"]):
     matplotlib_schema_dict = OrderedDict()
     """
     matplotlib_schema_dict["version"]["function_name"] = [(class_name, function_name, args, kargs)]
     """
     for version in version_list:
-        matplotlib_schema_path = f"{matplotlib_schema_dir}/matplotlib-{version}.jsonl"
+        matplotlib_schema_path = f"{matplotlib_schema_dir}/{library_name}-{version}.jsonl"
+        
         assert os.path.exists(matplotlib_schema_path), f"{matplotlib_schema_path} does not exist"
         if version not in matplotlib_schema_dict:
             matplotlib_schema_dict[version] = dict()
@@ -177,9 +179,17 @@ if __name__ == "__main__":
 
     # Input: matplotlib_schema/matplotlib-1.5.3 <--- matplotlib source code, downloaded from release page 
     # https://github.com/matplotlib/matplotlib/releases/tag/v1.5.3
-    extract_library_def_functions(glob_path=f"matplotlib_schema/matplotlib-1.5.3/lib/matplotlib/**/*.py",
-                                  output_path=f"matplotlib_schema/matplotlib-1.5.3.jsonl")
-    extract_library_def_functions(glob_path=f"matplotlib_schema/matplotlib-2.2.5/lib/matplotlib/**/*.py",
-                                  output_path=f"matplotlib_schema/matplotlib-2.2.5.jsonl")
-    extract_library_def_functions(glob_path=f"matplotlib_schema/matplotlib-3.8.1/lib/matplotlib/**/*.py",
-                                  output_path=f"matplotlib_schema/matplotlib-3.8.1.jsonl")
+    # extract_library_def_functions(glob_path=f"matplotlib_schema/matplotlib-1.5.3/lib/matplotlib/**/*.py",
+    #                               output_path=f"matplotlib_schema/matplotlib-1.5.3.jsonl")
+    # extract_library_def_functions(glob_path=f"matplotlib_schema/matplotlib-2.2.5/lib/matplotlib/**/*.py",
+    #                               output_path=f"matplotlib_schema/matplotlib-2.2.5.jsonl")
+    # extract_library_def_functions(glob_path=f"matplotlib_schema/matplotlib-3.8.1/lib/matplotlib/**/*.py",
+    #                               output_path=f"matplotlib_schema/matplotlib-3.8.1.jsonl")
+    
+    # Seaborn:
+    # extract_library_def_functions(glob_path=f"/Users/nngu0448/Documents/data/source_code/seaborn-0.13.2/seaborn/**/*.py",
+    #                               output_path=f"/Users/nngu0448/Documents/data/source_code/matplotlib-3.8.1.jsonl")
+    
+    # Pandas
+    extract_library_def_functions(glob_path=f"/Users/nngu0448/Documents/data/source_code/pandas-2.2.3/pandas/**/*.py",
+                                  output_path=f"/Users/nngu0448/Documents/data/source_code/pandas-2.2.3.jsonl")

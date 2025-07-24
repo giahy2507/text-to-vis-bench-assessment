@@ -14,8 +14,6 @@ def post_process_parsed_nodes(matplotlib_schema_dict, parsed_nodes, verbose=Fals
     for node in parsed_nodes:
         try:
             json.dumps(node)
-            if "target" in node:
-                node.pop("target")
             universal_node = convert_to_universal_format(node, matplotlib_schema_dict, verbose=verbose)
             result.append(universal_node)
         except:

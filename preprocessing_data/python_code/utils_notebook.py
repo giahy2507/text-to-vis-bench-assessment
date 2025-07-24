@@ -14,7 +14,10 @@ def filter_by_lines(code):
     return "\n".join(result)
 
 
-def parse_ast_for_notebook_cells(matplotlib_schema_dict, code_cells, verbose=False):
+def parse_ast_for_notebook_cells(matplotlib_schema_dict, 
+                                 code_cells,
+                                 target_lib="matplotlib",
+                                 verbose=False):
     content = []
     variable_list = []
 
@@ -28,10 +31,12 @@ def parse_ast_for_notebook_cells(matplotlib_schema_dict, code_cells, verbose=Fal
             for node in nodes:
                 # Parse function command and convert to universal format
                 parsed_nodes, variable_list = handle_node(node, 
-                            target_lib="matplotlib", 
+                            target_lib=target_lib, 
                             variable_list=variable_list, 
                             verbose=verbose)
-                content += post_process_parsed_nodes(matplotlib_schema_dict, parsed_nodes, verbose=verbose)
+                
+                if len(parsed_nodes) > 0:
+                    content += post_process_parsed_nodes(matplotlib_schema_dict, parsed_nodes, verbose=verbose)
         except KeyboardInterrupt:
             break
         except:
