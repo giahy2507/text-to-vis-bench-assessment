@@ -1,14 +1,14 @@
 import pandas as pd
 from scipy import stats
 
-tsv_path = "data/result_analysis_attributes/summary_stats_percentage.tsv"
+tsv_path = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/result_analysis_attributes_phase2/summary_stats_percentage.tsv"
 
 # read tsv file by pandas
 df = pd.read_csv(tsv_path, sep='\t')
 
 heat_map_values = []
 # print column Matplotlib_Python
-columns = ["Matplotlib_Notebook", "Matplotlib_Python", "Graphics_R", "ChartJS_JavaScript", "Vegalite_Vega", "PlotCoder_Matplotlib_Python", "ChartDialog_Matplotlib_Python", "nvBench_Vegalite_Vega"]
+columns = ["Matplotlib_Notebook", "Github_Notebook_Matplotlib", "REDCap_Notebook_Matplotlib", "OWID_Notebook_Matplotlib"]
 for i in range(len(columns)):
     values = []
     for j in range(0, len(columns)):
@@ -29,7 +29,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 
-columns_ticks = ["Matplotlib-nb", "Matplotlib-py", "Graphics", "ChartJS", "Vega-Lite", "PlotCoder", "ChartDialog","nvBench"]
+columns_ticks = ["Matplotlib-nb", "DA-T2V", "arXiv-T2V", "OWID-T2V"]
 
 mask = np.zeros_like(heat_map_values, dtype=bool)
 mask[np.tril_indices_from(mask)] = True
@@ -47,13 +47,13 @@ axes.xaxis.tick_top()
 # for xtick labels: "PlotCoder", "ChartDialog", "nvBench" --> red color
 # for ytick labels: "Matplotlib", "Graphics", "ChartJS", "Vegalite" --> black color
 for label in axes.get_xticklabels():
-    if label.get_text() in ["PlotCoder", "ChartDialog", "nvBench"]:
+    if label.get_text() in ["PlotCoder", "ChartDialog", "nvBench", "DA-T2V", "arXiv-T2V", "OWID-T2V"]:
         label.set_color('red')
     else:
         label.set_color('black')
 
 for label in axes.get_yticklabels():
-    if label.get_text() in ["PlotCoder", "ChartDialog", "nvBench"]:
+    if label.get_text() in ["PlotCoder", "ChartDialog", "nvBench", "DA-T2V", "arXiv-T2V", "OWID-T2V"]:
         label.set_color('red')
     else:
         label.set_color('black')
@@ -67,14 +67,16 @@ for label in axes.get_yticklabels():
     label.set_fontsize(12)
 
 # rorate xtick labels
-plt.xticks(rotation=20)
+# plt.xticks(rotation=20)
 
 # grid + brackground
 plt.grid(True, which='both', linestyle='--', linewidth=0.5, color='gray', alpha=0.2)
 plt.tight_layout()
-plt.show()
+
 
 # save figure with 300 dpi
-# plt.savefig('correlation_heatmap.png', dpi=300)
+plt.savefig('analysis2-attributes-correlation-heatmap.pdf', dpi=300)
+
+plt.show()
 
 

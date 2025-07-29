@@ -44,9 +44,11 @@ def get_top_k_func(universal_paths,
             for line in tqdm(fi, leave=False):
                 line = line.strip()
                 if line != "":
-                    json_objs = json.loads(line)["content"]
-                    
+                    json_objs = json.loads(line).get("content", [])
+
                     for json_obj in json_objs:
+                        if json_obj is None:
+                            continue
                         func_name = json_obj["func_name"]
                         
                         # filter by target_func_names
@@ -102,6 +104,8 @@ def get_top_kargs(universal_paths, topk=None):
                 if line != "":
                     json_objs = json.loads(line)["content"]
                     for json_obj in json_objs:
+                        if json_obj is None:
+                            continue
                         func_name = json_obj["func_name"]
                         for karg_key, karg_value in json_obj["kargs"].items():
                             for value in karg_value:
@@ -157,20 +161,25 @@ def check_func_arg_in_universal_file(func_name, arg_name, universal_path):
 
 
 if __name__ == "__main__":
-    
-    counting_dir = "data/counting"
-    universal_dir = "data/universal"
 
-    for dataset_name in ["Matplotlib_Python",
-                         "Matplotlib_Notebook", 
-                         "Graphics_R", 
-                         "ChartJS_JavaScript", 
-                         "Vegalite_Vega", 
-                         "ChartDialog_Matplotlib_Python", 
-                         "PlotCoder_Matplotlib_Python", 
-                         "nvBench_Vegalite_Vega"]:
-        
-        main_count_funcname_args(dataset_name=dataset_name, 
+    counting_dir = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/counting_phase2"
+    universal_dir = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/universal_phase2"
+
+    # for dataset_name in ["Matplotlib_Python",
+    #                      "Matplotlib_Notebook", 
+    #                      "Graphics_R", 
+    #                      "ChartJS_JavaScript", 
+    #                      "Vegalite_Vega", 
+    #                      "ChartDialog_Matplotlib_Python", 
+    #                      "PlotCoder_Matplotlib_Python", 
+    #                      "nvBench_Vegalite_Vega"]:
+    
+    
+    main_count_funcname_args(dataset_name="Github_Notebook_Matplotlib", 
+                                 universal_dir=universal_dir,
+                                 counting_dir=counting_dir)
+    
+    main_count_funcname_args(dataset_name="REDCap_Notebook_Matplotlib", 
                                  universal_dir=universal_dir,
                                  counting_dir=counting_dir)
 

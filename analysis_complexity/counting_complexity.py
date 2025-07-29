@@ -15,6 +15,8 @@ def main_count_unique_func_args(universal_dir, dataset_name):
             file_func_args_dict = defaultdict(int)
 
             for json_obj in json_objs:
+                if json_obj is None:
+                    continue
                 func_name = json_obj["func_name"]
                 # filter data functions (data processing)
                 if dataset_name == "Vegalite_Vega" or dataset_name == "nvBench_Vegalite_Vega":
@@ -42,15 +44,10 @@ def main_count_unique_func_args(universal_dir, dataset_name):
 
 
 if __name__ == "__main__":
-    universal_dir = "data/universal"
-    for dataset_name in ["Matplotlib_Python",
-                         "Matplotlib_Notebook", 
-                         "Graphics_R", 
-                         "ChartJS_JavaScript", 
-                         "Vegalite_Vega", 
-                         "ChartDialog_Matplotlib_Python", 
-                         "PlotCoder_Matplotlib_Python", 
-                         "nvBench_Vegalite_Vega"]:
+    universal_dir = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/universal_phase2"
+    for dataset_name in ["Matplotlib_Notebook",
+                         "Github_Notebook_Matplotlib",
+                         "REDCap_Notebook_Matplotlib"]:
         
         main_count_unique_func_args(universal_dir=universal_dir, 
                                     dataset_name=dataset_name)

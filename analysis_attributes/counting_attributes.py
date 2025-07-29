@@ -94,7 +94,9 @@ def count_frequency_over_dataset(dataset_name,
 
         # handling similar dataset
         dataset_name_4_params = dataset_name
-        if dataset_name == "PlotCoder_Matplotlib_Python":
+        if dataset_name in ["PlotCoder_Matplotlib_Python", 
+                            "Github_Notebook_Matplotlib",
+                            "REDCap_Notebook_Matplotlib"]:
             dataset_name_4_params = "Matplotlib_Python"
         elif dataset_name == "nvBench_Vegalite_Vega":
             dataset_name_4_params = "Vegalite_Vega"
@@ -139,16 +141,16 @@ def find_in_special_cases(special_cases, dataset_name, arg_param):
     return None
 
 
-def main_count_freq_attributes(mapping_dir, counting_dir, special_cases_path, output_dir, verbose=False):
+def main_count_freq_attributes(mapping_dir, 
+                               counting_dir, 
+                               special_cases_path, 
+                               output_dir, 
+                               verbose=False):
     
     datasets_name = ["Matplotlib_Notebook",
-                     "Matplotlib_Python", 
-                     "PlotCoder_Matplotlib_Python",
-                     "ChartDialog_Matplotlib_Python",
-                     "Graphics_R", 
-                     "ChartJS_JavaScript", 
-                     "Vegalite_Vega",
-                     "nvBench_Vegalite_Vega"]
+                     "Github_Notebook_Matplotlib", 
+                     "REDCap_Notebook_Matplotlib",
+                     "REDCap_Notebook_Matplotlib"]
 
     datasets_stats = []
     for dataset_name in datasets_name:
@@ -158,10 +160,10 @@ def main_count_freq_attributes(mapping_dir, counting_dir, special_cases_path, ou
                                         special_cases_path=special_cases_path,
                                         verbose=verbose)
         datasets_stats.append(stats)
-
+    
     counter_dataset_dict = defaultdict(int)    
     with open(f"{output_dir}/summary_stats_freq.tsv", "w", encoding="utf-8") as fo:
-        fo.write(f"Category\tAttribute\t{datasets_name[0]}\t{datasets_name[1]}\t{datasets_name[2]}\t{datasets_name[3]}\t{datasets_name[4]}\t{datasets_name[5]}\t{datasets_name[6]}\t{datasets_name[7]}\n")
+        fo.write(f"Category\tAttribute\t{datasets_name[0]}\t{datasets_name[1]}\t{datasets_name[2]}\t{datasets_name[3]}\n")
         params = datasets_stats[0].keys()
         for cat_att in params:
             category, attribute = cat_att.split("_")
@@ -169,12 +171,12 @@ def main_count_freq_attributes(mapping_dir, counting_dir, special_cases_path, ou
             for dataset_name, dataset_stats in zip(datasets_name, datasets_stats):
                 counter.append(dataset_stats[cat_att])
                 counter_dataset_dict[dataset_name]+=dataset_stats[cat_att]
-            fo.write(f"{category}\t{attribute}\t{counter[0]}\t{counter[1]}\t{counter[2]}\t{counter[3]}\t{counter[4]}\t{counter[5]}\t{counter[6]}\t{counter[7]}\n")
+            fo.write(f"{category}\t{attribute}\t{counter[0]}\t{counter[1]}\t{counter[2]}\t{counter[3]}\n")
 
     if verbose:
         pprint(counter_dataset_dict)
     with open(f"{output_dir}/summary_stats_percentage.tsv", "w", encoding="utf-8") as fo:
-        fo.write(f"Category\tAttribute\t{datasets_name[0]}\t{datasets_name[1]}\t{datasets_name[2]}\t{datasets_name[3]}\t{datasets_name[4]}\t{datasets_name[5]}\t{datasets_name[6]}\t{datasets_name[7]}\n")
+        fo.write(f"Category\tAttribute\t{datasets_name[0]}\t{datasets_name[1]}\t{datasets_name[2]}\t{datasets_name[3]}\n")
         params = datasets_stats[0].keys()
         for cat_att in params:
             category, attribute = cat_att.split("_")
@@ -182,15 +184,16 @@ def main_count_freq_attributes(mapping_dir, counting_dir, special_cases_path, ou
             for dataset_name, dataset_stats in zip(datasets_name, datasets_stats):
                 percent = (dataset_stats[cat_att]/counter_dataset_dict[dataset_name])*100
                 counter.append(f"{percent:.4f}")
-            fo.write(f"{category}\t{attribute}\t{counter[0]}\t{counter[1]}\t{counter[2]}\t{counter[3]}\t{counter[4]}\t{counter[5]}\t{counter[6]}\t{counter[7]}\n")
+            fo.write(f"{category}\t{attribute}\t{counter[0]}\t{counter[1]}\t{counter[2]}\t{counter[3]}\n")
 
 
 if __name__ == "__main__":
-    universal_dir = "data/universal"
-    mapping_dir = "data/mapping"
-    counting_dir = "data/counting"
+    data_dir = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data"
+    universal_dir = f"{data_dir}/universal_phase2"
+    mapping_dir = f"{data_dir}/mapping"
+    counting_dir = f"{data_dir}/counting_phase2"
     special_cases_path = f"{universal_dir}/special_cases.tsv"
-    output_dir = "data/result_analysis_attributes"
+    output_dir = f"{data_dir}/result_analysis_attributes_phase2"
     os.makedirs(output_dir, exist_ok=True)
 
     convert_mapping_xlsx_to_json(mapping_dir=mapping_dir)

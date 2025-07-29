@@ -67,7 +67,7 @@ def main_matplotlib_notebook():
 if __name__ == "__main__":
     # main_matplotlib_notebook()
     
-    target_lib = "seaborn"
+    target_lib = "matplotlib"
     
     if target_lib == "matplotlib":
         matplotlib_schema_dir = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/raw-data/schema/matplotlib_schema"
@@ -89,14 +89,19 @@ if __name__ == "__main__":
     
     
     import glob
-    glob_path = "/Users/nngu0448/Documents/data/github-data/*/*/*/*_t2v_detection.json"
-    nb_detection_paths = sorted(glob.glob(glob_path))
+    dataset = "REDCap"
+    if dataset == "Github":
+        glob_path = "/Users/nngu0448/Documents/data/github-data/*/*/*/*_t2v_detection.json"
+        nb_detection_paths = sorted(glob.glob(glob_path))
+        nb_paths = [path.replace("_t2v_detection.json", ".ipynb") for path in nb_detection_paths]
+        
+    elif dataset == "REDCap":
+        glob_path = "/Users/nngu0448/Documents/data/REDCap-VisReflect/Version_1/round_*/*/annotations/annotation.ipynb"
+        nb_paths = sorted(glob.glob(glob_path))
     
     data = []
-    
-    for nb_detection_path in nb_detection_paths:
-        
-        nb_path = nb_detection_path.replace("_t2v_detection.json", ".ipynb")
+
+    for nb_path in nb_paths:
         assert os.path.exists(nb_path), f"{nb_path} does not exist"
         
         # nb_path = '/Users/nngu0448/Documents/data/github-data/Batch-1/test-set-plotcoder/plotcoder_0001/Exercises_code_with_solutions.ipynb'
@@ -111,7 +116,7 @@ if __name__ == "__main__":
         universal_items = []
         universal_items = parse_ast_for_notebook_cells(schema_dict, code_cells, target_lib=target_lib)
         
-        print(f"Processing {nb_detection_path}")
+        print(f"Processing {nb_path}")
         print(len(universal_items))
         for item in universal_items:
             print(item)
@@ -122,7 +127,7 @@ if __name__ == "__main__":
             "content": universal_items
         })
 
-    output_path = f"/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/universal_phase2/notebook.{target_lib}.universal2.jsonl"
+    output_path = f"/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/universal_phase2/{dataset}.notebook.{target_lib}.universal2.jsonl"
     with open(output_path, "w") as fo:
         for item in data:
             fo.write(json.dumps(item, ensure_ascii=False) + "\n")

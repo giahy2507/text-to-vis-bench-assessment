@@ -149,8 +149,7 @@ if __name__ == "__main__":
     
     # ----------
     
-    jsonl_path = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/universal_phase2/notebook.matplotlib.universal2.jsonl"
-    print("Matplotlib_Notebook")
+    jsonl_path = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/universal_phase2/REDCap.notebook.matplotlib.universal2.jsonl"
     main_count_matplotlib_based(jsonl_path=jsonl_path, target_lib="matplotlib")
         
     
