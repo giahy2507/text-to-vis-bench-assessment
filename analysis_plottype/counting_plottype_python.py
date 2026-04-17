@@ -149,8 +149,11 @@ if __name__ == "__main__":
     
     # ----------
     
-    jsonl_path = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/universal_phase2/REDCap.notebook.matplotlib.universal2.jsonl"
+    jsonl_path = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/universal_phase2/Matplotlib_arXiv-T2V.universal2.jsonl"
     main_count_matplotlib_based(jsonl_path=jsonl_path, target_lib="matplotlib")
+    
+    # jsonl_path = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/universal_phase2/Matplotlib_GitHub-T2V.notebook.4-vis-libs.universal2.jsonl"
+    # main_count_matplotlib_based(jsonl_path=jsonl_path, target_lib="matplotlib")
         
     
 

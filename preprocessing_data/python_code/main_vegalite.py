@@ -145,8 +145,8 @@ def main_vegalite_parsing_from_the_stack(jsonl_file_path, output_file_path):
 
 if __name__ == "__main__":
     # jsonl_file_path, obtained from "../download_thestack.py"
-    jsonl_file_path = "data/raw-data/the-stack/JSON.vega-lite.jsonl"
-    output_file_path = "data/universal/Vegalite_Vega.universal2.jsonl"
+    jsonl_file_path = "/Users/nngu0448/Documents/data/NLV-Corpus/NLV_Corpus.jsonl"
+    output_file_path = "data/universal/NLV-Corpus_Vegalite_Vega.universal2.jsonl"
     
     main_vegalite_parsing_from_the_stack(jsonl_file_path, output_file_path)
                     

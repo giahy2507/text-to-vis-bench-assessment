@@ -191,5 +191,9 @@ if __name__ == "__main__":
     #                               output_path=f"/Users/nngu0448/Documents/data/source_code/matplotlib-3.8.1.jsonl")
     
     # Pandas
-    extract_library_def_functions(glob_path=f"/Users/nngu0448/Documents/data/source_code/pandas-2.2.3/pandas/**/*.py",
-                                  output_path=f"/Users/nngu0448/Documents/data/source_code/pandas-2.2.3.jsonl")
+    # extract_library_def_functions(glob_path=f"/Users/nngu0448/Documents/data/source_code/pandas-2.2.3/pandas/**/*.py",
+    #                               output_path=f"/Users/nngu0448/Documents/data/source_code/pandas-2.2.3.jsonl")
+    
+    # Plotly.py
+    extract_library_def_functions(glob_path=f"/Users/nngu0448/Documents/data/source_code/plotly.py-6.2.0/plotly/**/*.py",
+                                  output_path=f"/Users/nngu0448/Documents/data/source_code/plotly.py-6.2.0.jsonl")

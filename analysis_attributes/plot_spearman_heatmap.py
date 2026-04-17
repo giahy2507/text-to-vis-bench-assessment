@@ -1,14 +1,14 @@
 import pandas as pd
 from scipy import stats
 
-tsv_path = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/result_analysis_attributes_phase2/summary_stats_percentage.tsv"
+tsv_path = "data/result_analysis_attributes_phase2/summary_stats_percentage.tsv"
 
 # read tsv file by pandas
 df = pd.read_csv(tsv_path, sep='\t')
 
 heat_map_values = []
 # print column Matplotlib_Python
-columns = ["Matplotlib_Notebook", "Github_Notebook_Matplotlib", "REDCap_Notebook_Matplotlib", "OWID_Notebook_Matplotlib"]
+columns = ["Matplotlib_Notebook", "Matplotlib_GitHub-T2V", "Matplotlib_arXiv-T2V"]
 for i in range(len(columns)):
     values = []
     for j in range(0, len(columns)):
@@ -29,7 +29,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import numpy as np
 
-columns_ticks = ["Matplotlib-nb", "DA-T2V", "arXiv-T2V", "OWID-T2V"]
+columns_ticks = ["Matplotlib-nb", "GitHub-T2V", "arXiv-T2V"]
 
 mask = np.zeros_like(heat_map_values, dtype=bool)
 mask[np.tril_indices_from(mask)] = True
@@ -47,13 +47,13 @@ axes.xaxis.tick_top()
 # for xtick labels: "PlotCoder", "ChartDialog", "nvBench" --> red color
 # for ytick labels: "Matplotlib", "Graphics", "ChartJS", "Vegalite" --> black color
 for label in axes.get_xticklabels():
-    if label.get_text() in ["PlotCoder", "ChartDialog", "nvBench", "DA-T2V", "arXiv-T2V", "OWID-T2V"]:
+    if label.get_text() in ["PlotCoder", "ChartDialog", "nvBench", "GitHub-T2V", "arXiv-T2V", "OWID-T2V", "GitHub-T2V-MPL", "arXiv-T2V-MPL"]:
         label.set_color('red')
     else:
         label.set_color('black')
 
 for label in axes.get_yticklabels():
-    if label.get_text() in ["PlotCoder", "ChartDialog", "nvBench", "DA-T2V", "arXiv-T2V", "OWID-T2V"]:
+    if label.get_text() in ["PlotCoder", "ChartDialog", "nvBench", "GitHub-T2V", "arXiv-T2V", "OWID-T2V", "GitHub-T2V-MPL", "arXiv-T2V-MPL"]:
         label.set_color('red')
     else:
         label.set_color('black')

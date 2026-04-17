@@ -174,12 +174,11 @@ if __name__ == "__main__":
     #                      "PlotCoder_Matplotlib_Python", 
     #                      "nvBench_Vegalite_Vega"]:
     
-    
-    main_count_funcname_args(dataset_name="Github_Notebook_Matplotlib", 
+    main_count_funcname_args(dataset_name="Matplotlib_GitHub-T2V", 
                                  universal_dir=universal_dir,
                                  counting_dir=counting_dir)
     
-    main_count_funcname_args(dataset_name="REDCap_Notebook_Matplotlib", 
+    main_count_funcname_args(dataset_name="Matplotlib_arXiv-T2V", 
                                  universal_dir=universal_dir,
                                  counting_dir=counting_dir)
 

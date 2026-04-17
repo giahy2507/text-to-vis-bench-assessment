@@ -9,7 +9,7 @@ def main_count_unique_func_args(universal_dir, dataset_name):
     with open(univeral_data_path, mode="r", encoding="utf-8") as fi:
         y_unique_func = []
         y_unique_func_args = []
-        for line in tqdm(fi, leave=False):
+        for line in tqdm(fi, leave=True):
             json_objs = json.loads(line)["content"]
             file_func_dict = defaultdict(int)
             file_func_args_dict = defaultdict(int)
@@ -45,13 +45,15 @@ def main_count_unique_func_args(universal_dir, dataset_name):
 
 if __name__ == "__main__":
     universal_dir = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/universal_phase2"
-    for dataset_name in ["Matplotlib_Notebook",
-                         "Github_Notebook_Matplotlib",
-                         "REDCap_Notebook_Matplotlib"]:
-        
+    # datasets = ["Matplotlib_arXiv-T2V.notebook.4-vis-libs",
+    #             "Matplotlib_GitHub-T2V.notebook.4-vis-libs",
+    #             "ChartX.notebook.4-vis-libs",
+    #             "Text2Chart31.notebook.4-vis-libs",]
+    
+    datasets = ["Matplotlib_arXiv-T2V"]
+    for dataset_name in datasets:
         main_count_unique_func_args(universal_dir=universal_dir, 
                                     dataset_name=dataset_name)
-    
     
     
 

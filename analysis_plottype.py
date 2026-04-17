@@ -10,6 +10,40 @@ import pandas as pd
 import seaborn as sns
 
 
+# plot_type_map = {
+#     "plot": "line",
+#     "axhline": "line",
+#     "axvline": "line",
+#     "stem": "line",
+#     "errorbar": "line",
+#     "step": "line",
+
+#     "scatter": "scatter",
+#     "scatter3d": "scatter",
+    
+#     "hist": "bar",
+#     "bar": "bar",
+#     "barh": "bar",
+#     "bar3d": "bar",
+
+#     "bxp": "box",
+    
+#     "fill_between": "area",
+#     "fill_betweenx": "area",
+    
+#     "pie": "pie",
+    
+#     "contour": "contour",
+#     "contourf": "contour",
+    
+#     "pcolormesh": "heatmap",
+#     "imshow": "heatmap",
+#     "hexbin": "heatmap",
+#     "hist2d": "heatmap",
+#     "plot_surface3d": "heatmap",
+# }
+
+
 plot_type_map = {
     "plot": "line",
     "axhline": "line",
@@ -21,12 +55,13 @@ plot_type_map = {
     "scatter": "scatter",
     "scatter3d": "scatter",
     
-    "hist": "bar",
+    "hist": "hist",
+    
     "bar": "bar",
     "barh": "bar",
     "bar3d": "bar",
 
-    "bxp": "box",
+    "bxp": "box_plot",
     
     "fill_between": "area",
     "fill_betweenx": "area",
@@ -35,23 +70,30 @@ plot_type_map = {
     
     "contour": "contour",
     "contourf": "contour",
+
+    "pcolormesh": "matrix",
+    "imshow": "matrix",
+    "hexbin": "matrix",
+    "hist2d": "matrix",
+    "plot_surface3d": "3d_surface",
     
-    "pcolormesh": "heatmap",
-    "imshow": "heatmap",
-    "hexbin": "heatmap",
-    "hist2d": "heatmap",
-    "plot_surface3d": "heatmap",
+    "geo": "geomap",
 }
 
-def main_calculate_plot_type_freq(dataset="Github"):
-    
-    if dataset == "Github":
-        glob_path = "/Users/nngu0448/Documents/data/github-data/Version_1/*/*/t2v_notebook_true/*_log"
-    elif dataset == "REDCap":
-        glob_path = "/Users/nngu0448/Documents/data/REDCap-VisReflect/Version_1/round_*/*/annotations/t2v_notebook_true/*_log"
+def main_calculate_plot_type_freq(dataset="GitHub-T2V", groupping=False):
+
+    if dataset == "GitHub-T2V":
+        glob_path = "/Users/nngu0448/Documents/data/T2V-Phase2-Experiments/github-v2/github-v2_human-nlr_codex-gpt5_1/*/t2v_gt/*_log"
+        log_dirs = sorted(glob.glob(glob_path))
+    elif dataset == "arXiv-T2V":
+        glob_path = "/Users/nngu0448/Documents/data/T2V-Phase2-Experiments/arxiv-v3/arxiv-v3_human-nlr_codex-gpt5_1/*/t2v_gt/*_log"
+        glob_path_2 = "/Users/nngu0448/Documents/data/T2V-Phase2-Experiments/arxiv-v32/gpt-5/human-nlr/arxiv-v32-pred-1/*/t2v_gt/*_log"
+        log_dirs = sorted(glob.glob(glob_path) + glob.glob(glob_path_2))
+    elif dataset == "OWID-T2V":
+        glob_path = "/Users/nngu0448/Documents/data/T2V-Phase2-Experiments/owid-v6/owid-v6_machine-nlr_codex-gpt5_1/*/t2v_gt/*_log"
+        log_dirs = sorted(glob.glob(glob_path))
     else:
         raise ValueError("Unknown dataset")
-    log_dirs = sorted(glob.glob(glob_path))
     
     # Prepare data for analysis
     plt_func_freq = defaultdict(set)
@@ -65,7 +107,10 @@ def main_calculate_plot_type_freq(dataset="Github"):
             json_data = json.load(open(json_path, "r", encoding="utf-8"))
             plt_func = json_data.get("plt_func", "")
             if plt_func in plot_type_map:
-                plt_func_mapped = plot_type_map[plt_func]
+                if groupping:
+                    plt_func_mapped = plot_type_map[plt_func]
+                else:
+                    plt_func_mapped = plt_func
                 plt_func_set.add(plt_func_mapped)
             else:
                 unknown_plot_types[plt_func] += 1
@@ -80,7 +125,7 @@ def main_calculate_plot_type_freq(dataset="Github"):
     plt_func_global_freq = sorted(plt_func_global_freq.items(), key=lambda x: x[1], reverse=True)
     
     # write to csv file
-    output_path = f"data/analysis-result-p2/plot-type/{dataset}-plottype-global-freq.csv"
+    output_path = f"data/p2-analysis1/plot-type/{dataset}-plottype-global-freq.csv"
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("Plot Type,Frequency\n")
@@ -111,7 +156,7 @@ def main_calculate_plot_type_freq(dataset="Github"):
     plt_func_avg = sum(plt_func_avg_per_log.values()) / len(plt_func_avg_per_log)
             
     # write to csv file
-    output_path = f"data/analysis-result-p2/plot-type/{dataset}-number-of-distinct-plottype-freq.csv"
+    output_path = f"data/p2-analysis1/plot-type/{dataset}-number-of-distinct-plottype-freq.csv"
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("Number of Distinct Plot Types,Frequency\n")
@@ -132,38 +177,48 @@ def main_calculate_plot_type_freq(dataset="Github"):
     for plt_func, freq in unknown_plot_types.items():
         print(f"  {plt_func}: {freq}")
 
+
 def main_visualise_plot_type_freq():
-    # main_calculate_plot_type_freq(dataset="Github")
-    # main_calculate_plot_type_freq(dataset="REDCap")
-    github_path = "data/analysis-result-p2/plot-type/Github-plottype-global-freq.csv"
-    redcap_path = "data/analysis-result-p2/plot-type/REDCap-plottype-global-freq.csv"
+    github_path = "data/p2-analysis1/plot-type/Github-T2V-plottype-global-freq.csv"
+    arxiv_path = "data/p2-analysis1/plot-type/arXiv-T2V-plottype-global-freq.csv"
+    owid_path = "data/p2-analysis1/plot-type/OWID-T2V-plottype-global-freq.csv"
     
     # load the data using pandas
     github_df = pd.read_csv(github_path)
-    redcap_df = pd.read_csv(redcap_path)
+    arxiv_df = pd.read_csv(arxiv_path)
+    owid_df = pd.read_csv(owid_path)
     
     # add new column for dataset
-    github_df["Dataset"] = "DA-T2V"
-    redcap_df["Dataset"] = "arXiv-T2V"
+    owid_df["Dataset"] = "OWID-T2V"
+    github_df["Dataset"] = "GitHub-T2V"
+    arxiv_df["Dataset"] = "arXiv-T2V"
+    
+    # get top 10 plot types for each dataset
+    top_github = github_df.nlargest(10, "Frequency")
+    top_arxiv = arxiv_df.nlargest(10, "Frequency")
+    top_owid = owid_df.nlargest(10, "Frequency")
+    
+    # merge the top plot types
+    top_combined = pd.concat([top_github, top_arxiv, top_owid], ignore_index=True)
     
     # concatenate the dataframes
-    combined_df = pd.concat([github_df, redcap_df], ignore_index=True)
+    # combined_df = pd.concat([github_df, arxiv_df, owid_df], ignore_index=True)
     
     # plot using seaborn
-    plt.figure(figsize=(6, 4))
-    sns.barplot(data=combined_df, x="Frequency", y="Plot Type", hue="Dataset", palette="viridis")
-    # plt.title("Frequency of Plot Types in GitHub and REDCap Notebooks")
+    plt.figure(figsize=(4, 4))
+    sns.barplot(data=top_combined, x="Frequency", y="Plot Type", hue="Dataset", palette="viridis")
+    # plt.title("Frequency of Plot Types in GitHub and arxiv Notebooks")
     plt.xlabel("Frequency", fontsize=12)
     plt.ylabel("", fontsize=12)
     plt.legend(title="Dataset", fontsize=10, title_fontsize=12)
     plt.xticks(fontsize=12)
     plt.yticks(fontsize=12)
     plt.tight_layout()
-    plt.savefig("data/analysis-result-p2/plot-type/analysis-plottypes.pdf", dpi=300)
+    plt.savefig("data/p2-analysis1/plot-type/analysis-plottypes.pdf", dpi=300)
     plt.show()
 
 
-if __name__ == "__main__":
+def main_analysis_2():
     tsv_path = "/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/p2-analysis2/comparison-plottype.tsv"
     
     df = pd.read_csv(tsv_path, sep='\t')
@@ -172,7 +227,7 @@ if __name__ == "__main__":
     
     # tranform to long format
     nb_matplotlib_column = df["nb-Matplotlib"].tolist()
-    DA_t2v_column = df["DA-T2V"].tolist()
+    github_t2v_column = df["GitHub-T2V"].tolist()
     arxiv_t2v_column = df["arXiv-T2V"].tolist()
     plottype_values = df["Chart Type"].tolist()
     
@@ -183,8 +238,8 @@ if __name__ == "__main__":
                      "Frequency": nb_matplotlib_column[i], 
                      "Dataset": "Matplotlib-nb"})
         data.append({"Plot Type": plottype_values[i], 
-                     "Frequency": DA_t2v_column[i], 
-                     "Dataset": "DA-T2V"})
+                     "Frequency": github_t2v_column[i], 
+                     "Dataset": "GitHub-T2V"})
         data.append({"Plot Type": plottype_values[i], 
                      "Frequency": arxiv_t2v_column[i], 
                      "Dataset": "arXiv-T2V"})
@@ -200,9 +255,9 @@ if __name__ == "__main__":
     plt.xticks(fontsize=14)
     plt.yticks(fontsize=14)
     
-    # mark DA-T2V and arXiv-T2V with red color
+    # mark GitHub-T2V and arXiv-T2V with red color
     for label in plt.gca().get_xticklabels():
-        if label.get_text() in ["DA-T2V", "arXiv-T2V"]:
+        if label.get_text() in ["GitHub-T2V", "arXiv-T2V"]:
             label.set_color('red')
         else:
             label.set_color('black')
@@ -210,6 +265,14 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.savefig("data/p2-analysis2/analysis2-plottypes-comparison.pdf", dpi=300)
     plt.show()
+
+
+if __name__ == "__main__":
+    # main_calculate_plot_type_freq(dataset="GitHub-T2V", groupping=False)
+    # main_calculate_plot_type_freq(dataset="arXiv-T2V", groupping=False)
+    # main_calculate_plot_type_freq(dataset="OWID-T2V", groupping=False)
+    # main_visualise_plot_type_freq()
     
     
+    main_analysis_2()
     

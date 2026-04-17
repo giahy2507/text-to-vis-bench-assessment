@@ -41,6 +41,10 @@ def convert_mapping_xlsx_to_json(mapping_dir):
             "Attribute": attribute,
             "Matplotlib_Python": python_params,
             "Matplotlib_Notebook": python_params,
+            "Matplotlib_GitHub-T2V": python_params,
+            "Matplotlib_arXiv-T2V": python_params,
+            "GitHub-T2V": python_params,
+            "arXiv-T2V": python_params,
             "Graphics_R": r_params,
             "ChartJS_JavaScript": chartjs_params,
             "Vegalite_Vega": vegalite_params,
@@ -148,9 +152,8 @@ def main_count_freq_attributes(mapping_dir,
                                verbose=False):
     
     datasets_name = ["Matplotlib_Notebook",
-                     "Github_Notebook_Matplotlib", 
-                     "REDCap_Notebook_Matplotlib",
-                     "REDCap_Notebook_Matplotlib"]
+                     "Matplotlib_GitHub-T2V", 
+                     "Matplotlib_arXiv-T2V"]
 
     datasets_stats = []
     for dataset_name in datasets_name:
@@ -163,7 +166,7 @@ def main_count_freq_attributes(mapping_dir,
     
     counter_dataset_dict = defaultdict(int)    
     with open(f"{output_dir}/summary_stats_freq.tsv", "w", encoding="utf-8") as fo:
-        fo.write(f"Category\tAttribute\t{datasets_name[0]}\t{datasets_name[1]}\t{datasets_name[2]}\t{datasets_name[3]}\n")
+        fo.write(f"Category\tAttribute\t{datasets_name[0]}\t{datasets_name[1]}\t{datasets_name[2]}\n")
         params = datasets_stats[0].keys()
         for cat_att in params:
             category, attribute = cat_att.split("_")
@@ -171,12 +174,12 @@ def main_count_freq_attributes(mapping_dir,
             for dataset_name, dataset_stats in zip(datasets_name, datasets_stats):
                 counter.append(dataset_stats[cat_att])
                 counter_dataset_dict[dataset_name]+=dataset_stats[cat_att]
-            fo.write(f"{category}\t{attribute}\t{counter[0]}\t{counter[1]}\t{counter[2]}\t{counter[3]}\n")
+            fo.write(f"{category}\t{attribute}\t{counter[0]}\t{counter[1]}\t{counter[2]}\n")
 
     if verbose:
         pprint(counter_dataset_dict)
     with open(f"{output_dir}/summary_stats_percentage.tsv", "w", encoding="utf-8") as fo:
-        fo.write(f"Category\tAttribute\t{datasets_name[0]}\t{datasets_name[1]}\t{datasets_name[2]}\t{datasets_name[3]}\n")
+        fo.write(f"Category\tAttribute\t{datasets_name[0]}\t{datasets_name[1]}\t{datasets_name[2]}\n")
         params = datasets_stats[0].keys()
         for cat_att in params:
             category, attribute = cat_att.split("_")
@@ -184,7 +187,7 @@ def main_count_freq_attributes(mapping_dir,
             for dataset_name, dataset_stats in zip(datasets_name, datasets_stats):
                 percent = (dataset_stats[cat_att]/counter_dataset_dict[dataset_name])*100
                 counter.append(f"{percent:.4f}")
-            fo.write(f"{category}\t{attribute}\t{counter[0]}\t{counter[1]}\t{counter[2]}\t{counter[3]}\n")
+            fo.write(f"{category}\t{attribute}\t{counter[0]}\t{counter[1]}\t{counter[2]}\n")
 
 
 if __name__ == "__main__":
@@ -196,7 +199,10 @@ if __name__ == "__main__":
     output_dir = f"{data_dir}/result_analysis_attributes_phase2"
     os.makedirs(output_dir, exist_ok=True)
 
+    # load mappings definition
     convert_mapping_xlsx_to_json(mapping_dir=mapping_dir)
+    
+    # counting frequency of attributes over datasets
     main_count_freq_attributes(mapping_dir=mapping_dir, 
                                counting_dir=counting_dir, 
                                special_cases_path=special_cases_path,

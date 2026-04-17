@@ -209,7 +209,7 @@ def data_to_tex_command(first_column, x_pos=0, y_gap=0.5, x_pos_text_extend=0.4,
 
     if column_label and column_label != "":
         i = len(first_column)
-        if column_label in ["PlotCoder", "ChartDialog", "ChDialog", "nvBench", "NLVCor", "DA-T2V", "arXiv-T2V", "OWID-T2V"]:
+        if column_label in ["PlotCoder", "ChartDialog", "ChDialog", "nvBench", "NLVCor", "GitHub-T2V", "arXiv-T2V", "OWID-T2V", "GitHub-T2V-Matplotlib", "arXiv-T2V-Matplotlib"]:
             column_label = "\\textcolor{red}{"+ column_label +"}"
         
         if rotation:
@@ -289,8 +289,8 @@ def main_drawing_mapping_heatmap(tsv_path,
 if __name__ == "__main__":
     # main_count_freq(stats_version = "Counting-v1.4.0")
     
-    dataset_names = ["Matplotlib-nb", "DA-T2V", "arXiv-T2V", "arXiv-T2V"]
-    main_drawing_mapping_heatmap(f"/Users/nngu0448/Documents/usyd/projects/text-to-vis-benchmarks-assessment/data/result_analysis_attributes_phase2/summary_stats_percentage.tsv", 
+    dataset_names = ["Matplotlib-nb", "GitHub-T2V", "arXiv-T2V"]
+    main_drawing_mapping_heatmap(f"data/result_analysis_attributes_phase2/summary_stats_percentage.tsv", 
                                  dataset_names, 
                                  width_cell=0.75, 
                                  width_text=2.8,
