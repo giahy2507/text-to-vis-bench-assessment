@@ -121,79 +121,86 @@ def extract_distinct_libraries_py(py_path):
     return lib_set
 
 if __name__ == "__main__":
-    main_analysis_library_usage()
+    # main_analysis_library_usage()
     
-    # dataset = "arXiv-T2V"
+    dataset = "Text2Vis"
     
-    # if dataset == "ChartX":
-    #     glob_path = "/Users/nngu0448/Documents/data/ChartX-Dataset/my_parsing/*/*/notebook.ipynb"
-    #     nb_paths = glob.glob(glob_path)
-    # elif dataset == "Text2Chart31":
-    #     glob_path = "/Users/nngu0448/Documents/data/Text2Chart31-Dataset/Text2Chart31-test/*/t2v_notebook_true/*.ipynb"
-    #     nb_paths = glob.glob(glob_path)
-    # elif dataset == "GitHub-T2V":
-    #     glob_path = "/Users/nngu0448/Documents/data/github-data/github-v2/test*/t2v_gt/test*.py"
-    #     nb_paths = glob.glob(glob_path)
-    # elif dataset == "arXiv-T2V":
-    #     glob_path = "/Users/nngu0448/Documents/data/REDCap-VisReflect/arxiv-v3/r*/t2v_gt/r*.py"
-    #     glob_path_2 = "/Users/nngu0448/Documents/data/REDCap-VisReflect/arxiv-v32/r*/t2v_gt/r*.py"
-    #     nb_paths = glob.glob(glob_path)
-    #     nb_paths += glob.glob(glob_path_2)
-        
-        
-    # print(f"Total number of notebooks: {len(nb_paths)}")
-    # counter = []
-    # lib_frequency = defaultdict(int)
-    # stats_data = []
-    # nb_paths = sorted(nb_paths)
-    # for nb_path in tqdm(nb_paths):
+    if dataset == "ChartX":
+        glob_path = "/Users/nngu0448/Documents/data/ChartX-Dataset/my_parsing/*/*/notebook.ipynb"
+        nb_paths = glob.glob(glob_path)
+    elif dataset == "Text2Chart31":
+        glob_path = "/Users/nngu0448/Documents/data/Text2Chart31-Dataset/Text2Chart31-test/*/t2v_notebook_true/*.ipynb"
+        nb_paths = glob.glob(glob_path)
+    elif dataset == "GitHub-T2V":
+        glob_path = "/Users/nngu0448/Documents/data/github-data/github-v2/test*/t2v_gt/test*.py"
+        nb_paths = glob.glob(glob_path)
+    elif dataset == "arXiv-T2V":
+        glob_path = "/Users/nngu0448/Documents/data/REDCap-VisReflect/arxiv-v3/r*/t2v_gt/r*.py"
+        glob_path_2 = "/Users/nngu0448/Documents/data/REDCap-VisReflect/arxiv-v32/r*/t2v_gt/r*.py"
+        nb_paths = glob.glob(glob_path)
+        nb_paths += glob.glob(glob_path_2)
+    elif dataset == "ChartMimic":
+        glob_path = "/Users/nngu0448/Documents/data/ChartMimic/t2v-chartmimic/*/t2v_pred/*.py"
+        nb_paths = glob.glob(glob_path)
+    elif dataset == "Text2Vis":
+        glob_path = "/Users/nngu0448/Documents/data/Text2Vis/t2v-text2vis/*/t2v_pred/*.py"
+        nb_paths = glob.glob(glob_path)
 
-    #     if nb_path.endswith(".ipynb"):
-    #         lib_set = extract_distinct_libraries_nb(nb_path)
-    #     elif nb_path.endswith(".py"):
-    #         lib_set = extract_distinct_libraries_py(nb_path)
-    #     elif nb_path.endswith(".vis-request.txt"):
-    #         py_path = nb_path.replace(".vis-request.txt", ".py")
-    #         lib_set = extract_distinct_libraries_py(py_path)
-    #     else:
-    #         raise ValueError(f"Unsupported file type: {nb_path}")
         
-    #     if "warnings" in lib_set:
-    #         lib_set.remove("warnings")
-    #     if "t2vlog" in lib_set:
-    #         lib_set.remove("t2vlog")
+    print(f"Total number of notebooks: {len(nb_paths)}")
+    counter = []
+    lib_frequency = defaultdict(int)
+    stats_data = []
+    nb_paths = sorted(nb_paths)
+    for nb_path in tqdm(nb_paths):
+
+        if nb_path.endswith(".ipynb"):
+            lib_set = extract_distinct_libraries_nb(nb_path)
+        elif nb_path.endswith(".py"):
+            lib_set = extract_distinct_libraries_py(nb_path)
+        elif nb_path.endswith(".vis-request.txt"):
+            py_path = nb_path.replace(".vis-request.txt", ".py")
+            lib_set = extract_distinct_libraries_py(py_path)
+        else:
+            raise ValueError(f"Unsupported file type: {nb_path}")
         
-    #     stats_data.append({
-    #         "notebook_path": nb_path,
-    #         "# distinct libraries": len(lib_set),
-    #         "libraries": list(lib_set)
-    #     })
-    #     for lib_name in lib_set:
-    #         lib_frequency[lib_name] += 1
-    #     counter.append(len(lib_set))
+        if "warnings" in lib_set:
+            lib_set.remove("warnings")
+        if "t2vlog" in lib_set:
+            lib_set.remove("t2vlog")
+        
+        stats_data.append({
+            "notebook_path": nb_path,
+            "# distinct libraries": len(lib_set),
+            "libraries": list(lib_set)
+        })
+        for lib_name in lib_set:
+            lib_frequency[lib_name] += 1
+        counter.append(len(lib_set))
     
-    # df = pd.DataFrame(stats_data)
+    df = pd.DataFrame(stats_data)
     
-    # # add a new row for average
-    # avg_row = {
-    #     "notebook_path": "Average",
-    #     "# distinct libraries": df["# distinct libraries"].mean(),
-    #     "libraries": ""
-    # }
-    # df = df._append(avg_row, ignore_index=True)
+    # add a new row for average
+    avg_row = {
+        "notebook_path": "Average",
+        "# distinct libraries": df["# distinct libraries"].mean(),
+        "libraries": ""
+    }
+    df = df._append(avg_row, ignore_index=True)
+    print(df[["notebook_path", "# distinct libraries"]])
     
-    # # save the stats data for each file
-    # output_path = f"data/p2-analysis1/distinct_library/{dataset}_library-set.csv"
-    # os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    # df.to_csv(output_path, index=False, encoding="utf-8")
+    # save the stats data for each file
+    output_path = f"data/p2-analysis1/distinct_library/{dataset}_library-set.csv"
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    df.to_csv(output_path, index=False, encoding="utf-8")
     
-    # # save the library frequency
-    # lib_frequency = sorted(lib_frequency.items(), key=lambda x: x[1], reverse=True)
+    # save the library frequency
+    lib_frequency = sorted(lib_frequency.items(), key=lambda x: x[1], reverse=True)
     
-    # # write to csv file
-    # output_path = f"data/p2-analysis1/distinct_library/{dataset}_library-freq.csv"
-    # os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    # with open(output_path, "w", encoding="utf-8") as f:
-    #     f.write("Library,Frequency\n")
-    #     for lib, freq in lib_frequency:
-    #         f.write(f"{lib},{freq}\n")
+    # write to csv file
+    output_path = f"data/p2-analysis1/distinct_library/{dataset}_library-freq.csv"
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("Library,Frequency\n")
+        for lib, freq in lib_frequency:
+            f.write(f"{lib},{freq}\n")

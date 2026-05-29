@@ -160,7 +160,7 @@ if __name__ == "__main__":
     data = []
     # datasets = ["GitHub-T2V", "arXiv-T2V", "OWID-T2V", "Text2Chart31", "ChartX", "NLV-Corpus", "nvBench"]
     # datasets = ["GitHub-T2V", "arXiv-T2V", "OWID-T2V"]
-    datasets = ["OWID-T2V"]
+    datasets = ["Text2Vis"]
 
     for dataset in datasets:
         if dataset == "GitHub-T2V":
@@ -174,8 +174,18 @@ if __name__ == "__main__":
         elif dataset == "OWID-T2V":
             glob_path = "/Users/nngu0448/Documents/data/T2V-Phase2-Experiments/owid-v6/gpt-5/owid-v6-pred-1/*/t2v_pred/*.vis-request.txt"
             t2v_sample_paths = sorted(glob.glob(glob_path))
+        
+        elif dataset == "MatPlotBench":
+            glob_path = "/Users/nngu0448/Documents/data/MatPlotAgent/benchmark_data/t2v-dataset/*.vis-request.txt"
+            t2v_sample_paths = sorted(glob.glob(glob_path))
         elif dataset == "nvBench2.0":
             glob_path = "/Users/nngu0448/Documents/data/nvBench2.0-dataset/t2v-dataset/*/t2v_gt/test*.py"
+            t2v_sample_paths = sorted(glob.glob(glob_path))
+        elif dataset == "ChartMimic":
+            glob_path = "/Users/nngu0448/Documents/data/ChartMimic/t2v-chartmimic/*/t2v_pred/*.py"
+            t2v_sample_paths = sorted(glob.glob(glob_path))
+        elif dataset == "Text2Vis":
+            glob_path = "/Users/nngu0448/Documents/data/Text2Vis/t2v-text2vis/*/t2v_pred/*.py"
             t2v_sample_paths = sorted(glob.glob(glob_path))
             
         elif dataset == "ChartX":
@@ -198,7 +208,7 @@ if __name__ == "__main__":
         for source_type in ["input", "output"]:
         
             for k in range(k_min, k_max + 1):
-                if dataset in ["GitHub-T2V", "arXiv-T2V", "OWID-T2V", "nvBench2.0"]:
+                if dataset in ["GitHub-T2V", "arXiv-T2V", "OWID-T2V", "nvBench2.0", "MatPlotBench", "ChartMimic", "Text2Vis"]:
                     distinct_k_value = compute_distinct_k_new(t2v_sample_paths, k, source_type)
                 elif dataset in ["NLV-Corpus", "nvBench"]:
                     distinct_k_value = compute_distinct_k_jsonl(t2v_sample_paths[0], k, source_type)

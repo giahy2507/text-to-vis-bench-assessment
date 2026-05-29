@@ -107,6 +107,14 @@ def main_vislib_notebook(dataset):
     elif dataset == "Text2Chart31":
         glob_path = "/Users/nngu0448/Documents/data/Text2Chart31-Dataset/Text2Chart31-test/*/t2v_notebook_true/*.ipynb"
         nb_paths = sorted(glob.glob(glob_path))
+        
+    elif dataset == "ChartMimic":
+        glob_path = "/Users/nngu0448/Documents/data/ChartMimic/t2v-chartmimic/*/t2v_pred/*.py"
+        nb_paths = sorted(glob.glob(glob_path))
+        
+    elif dataset == "Text2Vis":
+        glob_path = "/Users/nngu0448/Documents/data/Text2Vis/t2v-text2vis/*/t2v_pred/*.py"
+        nb_paths = sorted(glob.glob(glob_path))
     
     elif dataset == "test":
         glob_path = "/Users/nngu0448/Documents/data/ChartX-Dataset/my_parsing/test/sample-00917-funnel-163/notebook.ipynb"
@@ -159,10 +167,13 @@ def main_vislib_notebook(dataset):
 if __name__ == "__main__":
     # main_matplotlib_notebook()
     # main_vislib_notebook("GitHub-T2V")
-    main_vislib_notebook("arXiv-T2V")
+    # main_vislib_notebook("arXiv-T2V")
     
     # main_vislib_notebook("ChartX")
     # main_vislib_notebook("Text2Chart31")
+    
+    main_vislib_notebook("ChartMimic")
+    main_vislib_notebook("Text2Vis")
     
     
             

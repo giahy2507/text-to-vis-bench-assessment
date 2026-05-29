@@ -39,7 +39,6 @@ def main_analysis_subplot_python_based():
         log_data_paths = sorted(glob.glob(os.path.join(log_dir, "*.json")))
         
         subplot_ids = set()
-        
         for log_data_path in log_data_paths:
             if "variables.json" in log_data_path:
                 continue

@@ -114,7 +114,7 @@ def main_calculate_for_vegalite_based():
     print(f"Saved {dataset} data sample lengths to {output_path}")
 
 def main_calculate_for_python_new_format():
-    dataset = "OWID-T2V"
+    dataset = "Text2Vis"
     
     glob_path = None
     glob_path_2 = None
@@ -125,8 +125,14 @@ def main_calculate_for_python_new_format():
         glob_path_2 = "/Users/nngu0448/Documents/data/REDCap-VisReflect/arxiv-v32/r*/t2v_gt/r*.py"
     elif dataset == "OWID-T2V":
         glob_path = "/Users/nngu0448/Documents/data/T2V-Phase2-Experiments/owid-v6/gpt-5/owid-v6-pred-1/*/t2v_pred/*.vis-request.txt"
+    elif dataset == "MatPlotBench":
+        glob_path = "/Users/nngu0448/Documents/data/MatPlotAgent/benchmark_data/t2v-dataset/*.vis-request.txt"
     elif dataset == "nvBench2.0":
         glob_path = "/Users/nngu0448/Documents/data/nvBench2.0-dataset/t2v-dataset/*/t2v_gt/test*.py"
+    elif dataset == "ChartMimic":
+        glob_path = "/Users/nngu0448/Documents/data/ChartMimic/t2v-chartmimic/*/t2v_pred/*.py"
+    elif dataset == "Text2Vis":
+        glob_path = "/Users/nngu0448/Documents/data/Text2Vis/t2v-text2vis/*/t2v_pred/*.py"
     else:
         raise ValueError("Unknown dataset")
     
@@ -169,6 +175,10 @@ def main_calculate_for_python_new_format():
         "output_length": avg_output_length,
         "total_length": avg_total_length
     }
+    
+    print(f"Average input length: {avg_input_length}")
+    print(f"Average output length: {avg_output_length}")
+    print(f"Average total length: {avg_total_length}")
     
     # Write stats to a csv file
     output_path = f"data/p2-analysis1/io_length/{dataset}_io_length.csv"

@@ -50,7 +50,7 @@ if __name__ == "__main__":
     #             "ChartX.notebook.4-vis-libs",
     #             "Text2Chart31.notebook.4-vis-libs",]
     
-    datasets = ["Matplotlib_arXiv-T2V"]
+    datasets = ["ChartMimic", "Text2Vis"]
     for dataset_name in datasets:
         main_count_unique_func_args(universal_dir=universal_dir, 
                                     dataset_name=dataset_name)
